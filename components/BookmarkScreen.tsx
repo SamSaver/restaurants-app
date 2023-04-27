@@ -22,7 +22,7 @@ function BookmarkScreen() {
   ) : (
     <div className="flex flex-col w-full h-full">
       <div className="flex flex-col justify-between items-center">
-        <h1 className="text-3xl font-bold text-black p-11">Bookmarks</h1>
+        <h1 className="text-3xl font-bold text-white p-11">Bookmarks</h1>
         {/* List of Favourite Restaurants */}
         <BookmarkEmbedList />
       </div>

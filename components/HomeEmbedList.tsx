@@ -4,12 +4,38 @@ import { AppContext } from "@/context/context";
 import AddButton from "./AddButton";
 import RemoveButton from "./RemoveButton";
 
-function HomeEmbedList({ embedList }: { embedList: any[] }) {
-  const { bookmarks } = useContext(AppContext);
+function HomeEmbedList({
+  homeList,
+  handleRemoveFromHome,
+}: {
+  homeList?: any[];
+  handleRemoveFromHome: (name: string) => void;
+}) {
+  const { bookmarks, dispatchBookmarkEvent } = useContext(AppContext);
+
+  const handleAddToBookmark = (name: string) => {
+    console.log("clicked add to bookmark");
+    console.log(name);
+
+    // add to bookmarks
+    dispatchBookmarkEvent("ADD_BOOKMARK", name);
+    localStorage.setItem(
+      "bookmarks",
+      JSON.stringify([...Array.from(bookmarks), name])
+    );
+
+    // remove from homeList
+    handleRemoveFromHome(name);
+  };
 
   return (
     <div className="flex flex-col w-full h-full items-center justify-between space-y-20 mt-10">
-      {embedList.map((restaurant_name, index) => {
+      {homeList?.length === 0 && (
+        <div className="text-lg font-bold text-gray-300">
+          No restaurants in your list
+        </div>
+      )}
+      {homeList?.map((restaurant_name, index) => {
         var name: string;
 
         if (typeof restaurant_name === "string") {
@@ -26,11 +52,10 @@ function HomeEmbedList({ embedList }: { embedList: any[] }) {
             {/* Mark as Favourite Button if not favourite else Remove from Favourite Button */}
             <h1 className="text-3xl font-bold text-white">{name}</h1>
 
-            {!bookmarks.has(restaurant_name) ? (
-              <AddButton name={name} />
-            ) : (
-              <RemoveButton name={name} />
-            )}
+            <div className="flex flex-row space-x-4">
+              <AddButton name={name} handleAdd={handleAddToBookmark} />
+              <RemoveButton name={name} handleRemove={handleRemoveFromHome} />
+            </div>
 
             <iframe
               width="600"

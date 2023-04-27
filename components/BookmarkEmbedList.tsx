@@ -31,11 +31,9 @@ function BookmarkEmbedList() {
             {/* Mark as Favourite Button if not favourite else Remove from Favourite Button */}
             <h1 className="text-3xl font-bold text-white">{name}</h1>
 
-            {!bookmarks.has(restaurant_name) ? (
-              <AddButton name={name} />
-            ) : (
+            <div className="flex flex-row, space-x-4">
               <RemoveButton name={name} />
-            )}
+            </div>
 
             <iframe
               width="600"

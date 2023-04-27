@@ -1,16 +1,24 @@
 import React, { useState, useContext } from "react";
 import { AppContext } from "@/context/context";
 
-function AddButton({ name }: { name: string }) {
+function AddButton({
+  name,
+  handleAdd,
+}: {
+  name: string;
+  handleAdd?: (name: string) => void;
+}) {
   const { bookmarks, dispatchBookmarkEvent } = useContext(AppContext);
-  const [isDisabled, setIsDisabled] = useState<boolean>(bookmarks.has(name));
-  const [buttonText, setButtonText] = useState<string>(
-    bookmarks.has(name) ? "Added!" : "Add"
-  );
+  const [isDisabled, setIsDisabled] = useState<boolean>(false);
+  const [buttonText, setButtonText] = useState<string>("Add To Bookmark");
 
   return (
     <button
       onClick={() => {
+        if (handleAdd) {
+          handleAdd(name);
+          return;
+        }
         setIsDisabled(true);
         setButtonText("Added!");
         dispatchBookmarkEvent("ADD_BOOKMARK", name);

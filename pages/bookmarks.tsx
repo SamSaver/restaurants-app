@@ -1,9 +1,11 @@
 import { Inter } from "next/font/google";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import Context, { AppContext } from "../context/context";
+import Context from "../context/context";
 import SideBar from "@/components/SideBar";
 import BookmarkScreen from "@/components/BookmarkScreen";
+import Image from "next/image";
+import BackImage from "../images/back.jpg";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -31,8 +33,16 @@ export default function Bookmarks() {
       <main
         className={`bg-slate-50 flex min-h-screen flex-col items-center justify-between ${inter.className}`}
       >
+        <div className="fixed top-0 left-0 w-full h-full z-0">
+          <Image
+            src={BackImage}
+            alt="back"
+            fill={true}
+            style={{ objectFit: "cover" }}
+          />
+        </div>
         {/* This div below will divide the page intwo 2 parts: Sidebar and MainScreen */}
-        <div className="flex w-full h-full flex-row">
+        <div className="flex z-10 w-full h-full flex-row">
           {/* This is the sidebar */}
           <SideBar
             currentTab={currentTab}

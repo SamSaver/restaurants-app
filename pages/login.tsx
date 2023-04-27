@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
+import BackImage from "../images/back.jpg";
+import Image from "next/image";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [bg_color, setBgColor] = useState("bg-[#1D1B1D]");
 
   useEffect(() => {
     // Get the session token from the local storage
@@ -18,6 +21,13 @@ function Login() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (!email || !password) {
+      setLoading(false);
+      setBgColor("bg-red-500");
+      alert("Please enter email and password");
+      return;
+    }
 
     setLoading(true);
 
@@ -41,7 +51,10 @@ function Login() {
     );
 
     if (!user) {
+      setLoading(false);
+      setBgColor("bg-red-500");
       alert("Invalid email or password");
+
       return;
     }
 
@@ -50,8 +63,15 @@ function Login() {
   };
 
   return (
-    <main className="flex min-h-screen bg-slate-50 flex-col items-center justify-between p-24">
-      <div className="flex flex-col bg-[#1D1B1D] rounded-md shadow-lg w-1/3 px-4 py-10 items-center">
+    <main className="flex min-h-screen bg-slate-50 flex-col items-center justify-center p-24">
+      <Image
+        src={BackImage}
+        className="absolute z-0 h-full w-full"
+        alt="back"
+      />
+      <div
+        className={`flex flex-col ${bg_color} z-10 rounded-md shadow-lg w-1/3 px-4 py-10 items-center`}
+      >
         <h1 className="text-3xl text-white p-11">Welcome Back!</h1>
         <form
           className="flex flex-col items-center justify-between space-y-5"

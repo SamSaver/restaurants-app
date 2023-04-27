@@ -1,12 +1,16 @@
 import React, { useState, useContext } from "react";
 import { AppContext } from "@/context/context";
 
-function RemoveButton({ name }: { name: string }) {
+function RemoveButton({
+  name,
+  handleRemove,
+}: {
+  name: string;
+  handleRemove?: (name: string) => void;
+}) {
   const { bookmarks, dispatchBookmarkEvent } = useContext(AppContext);
-  const [isDisabled, setIsDisabled] = useState<boolean>(!bookmarks.has(name));
-  const [buttonText, setButtonText] = useState<string>(
-    bookmarks.has(name) ? "Remove" : "Removed!"
-  );
+  const [isDisabled, setIsDisabled] = useState<boolean>(false);
+  const [buttonText, setButtonText] = useState<string>("Remove");
 
   return (
     <button
@@ -16,6 +20,11 @@ function RemoveButton({ name }: { name: string }) {
           : "cursor-pointer hover:bg-red-700"
       } text-white font-bold py-2 px-4 rounded-full`}
       onClick={() => {
+        if (handleRemove) {
+          handleRemove(name);
+          return;
+        }
+
         setIsDisabled(true);
         setButtonText("Removed!");
 
